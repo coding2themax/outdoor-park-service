@@ -8,6 +8,8 @@ class OutdoorParkServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
+
+		OutdoorParkServiceApplication.main(new String[] {});
 	}
 
 }
