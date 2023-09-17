@@ -1,22 +1,19 @@
 package com.coding2themax.outdoor.outdoorparkservice.config;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.coding2themax.outdoor.outdoorparkservice.handler.ParkHandler;
-import com.coding2themax.outdoor.outdoorparkservice.model.Park;
 
 @WebFluxTest
-@ContextConfiguration(classes = { ParkRouter.class, ParkHandler.class })
-public class ParkRouterTest {
+@ContextConfiguration(classes = { Router.class, ParkHandler.class })
+public class RouterTest {
 
   @Autowired
   private ApplicationContext context;
