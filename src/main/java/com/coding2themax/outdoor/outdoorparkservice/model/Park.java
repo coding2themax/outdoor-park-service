@@ -11,13 +11,13 @@ import lombok.Data;
 public class Park {
 
   @Id
-  private Long parkid;
+  private String parkid;
 
   @Column
   private String url;
-  @Column
-  private String fullName;
-  @Column
+  @Column(value = "full_name")
+  private String full_name;
+  @Column(value = "park_code")
   private String parkCode;
   @Column
   private String description;

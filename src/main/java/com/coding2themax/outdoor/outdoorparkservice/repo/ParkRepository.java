@@ -8,7 +8,7 @@ import com.coding2themax.outdoor.outdoorparkservice.model.Park;
 import reactor.core.publisher.Flux;
 
 @Repository
-public interface ParkRepository extends ReactiveCrudRepository<Park, Long> {
+public interface ParkRepository extends ReactiveCrudRepository<Park, String> {
 
   Flux<Park> findAll();
 
