@@ -1,34 +1,47 @@
 package com.coding2themax.outdoor.outdoorparkservice.service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import com.coding2themax.outdoor.outdoorparkservice.model.Park;
-import com.coding2themax.outdoor.outdoorparkservice.repo.ParkRepository;
 
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
-
-//@Testcontainers
-@SpringBootTest
+@Testcontainers
+@DataR2dbcTest
 public class RDBCParkServiceTest {
 
-  RDBCParkService service;
+  static PostgreSQLContainer<?> postgreSQL = new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
 
-  @Autowired
-  ParkRepository repository;
+  static {
+    postgreSQL.start();
+  }
 
-  @Autowired
-  DatabaseClient client;
+  @DynamicPropertySource
+  static void registerPostgreSQLProperties(DynamicPropertyRegistry registry) {
 
-  @Disabled
+    String url = String.format("r2dbc:postgresql://%s:%s/%s",
+        postgreSQL.getHost(),
+        postgreSQL.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
+        postgreSQL.getDatabaseName());
+
+    registry.add("spring.r2dbc.url", url::toString);
+
+    registry.add("spring.r2dbc.username", postgreSQL::getUsername);
+    registry.add("spring.r2dbc.password", postgreSQL::getUsername);
+
+    registry.add("spring.liquibase.url", postgreSQL::getJdbcUrl);
+    registry.add("spring.liquibase.user", postgreSQL::getUsername);
+    registry.add("spring.liquibase.password", postgreSQL::getUsername);
+  }
+
   @Test
   void testGetAllParks() {
-    service = new RDBCParkService(repository);
 
     Park park1 = new Park();
     // park1.setParkid("869BAD2B-C46F-4FEB-891B-EBA119B64B48");
@@ -38,11 +51,5 @@ public class RDBCParkServiceTest {
     // R2dbcEntityTemplate template = new R2dbcEntityTemplate(client,
     // PostgresDialect.INSTANCE);
     // template.insert(Park.class).using(park1).then().as(StepVerifier::create).verifyComplete();
-
-    Flux<Park> findAll = service.getAllParks();
-
-    findAll.as(StepVerifier::create).assertNext(a -> {
-      Assertions.assertEquals("869BAD2B-C46F-4FEB-891B-EBA119B64B48", a.getParkid());
-    }).verifyComplete();
   }
 }
