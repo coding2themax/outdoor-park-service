@@ -77,5 +77,7 @@ public class RDBCParkServiceTest {
     R2dbcEntityTemplate template = new R2dbcEntityTemplate(database.getConnectionFactory());
     template.insert(Park.class).using(park1).as(StepVerifier::create).expectNextCount(1).verifyComplete();
 
+    repository.findAll().as(StepVerifier::create).expectNextCount(1).verifyComplete();
+
   }
 }
