@@ -59,7 +59,7 @@ public class RDBCParkServiceTest {
     // park1.setParkid(1l);
     park1.setDescription("testde");
     park1.setUrl("test-url");
-    park1.setFull_name("test full name");
+    park1.setFullName("test full name");
     park1.setLatitude("lat");
     park1.setParkCode("parkcode");
     park1.setLongitude("long");
