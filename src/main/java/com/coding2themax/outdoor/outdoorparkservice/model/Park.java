@@ -15,9 +15,9 @@ public class Park {
 
   @Column
   private String url;
-  @Column(value = "full_name")
+  @Column(value = "fullName")
   private String fullName;
-  @Column(value = "park_code")
+  @Column(value = "parkCode")
   private String parkCode;
   @Column
   private String description;
