@@ -1,9 +1,9 @@
 package com.coding2themax.outdoor.outdoorparkservice.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -30,6 +30,8 @@ public class RDBCParkServiceTest {
 
   @Autowired
   DatabaseClient database;
+
+  RDBCParkService service;
 
   @DynamicPropertySource
   static void registerPostgreSQLProperties(DynamicPropertyRegistry registry) {
@@ -78,6 +80,12 @@ public class RDBCParkServiceTest {
     template.insert(Park.class).using(park1).as(StepVerifier::create).expectNextCount(1).verifyComplete();
 
     repository.findAll().as(StepVerifier::create).expectNextCount(1).verifyComplete();
+
+    service = new RDBCParkService(repository);
+
+    Assertions.assertNotNull(service);
+
+    service.getAllParks().as(StepVerifier::create).expectNextCount(1).verifyComplete();
 
   }
 }
