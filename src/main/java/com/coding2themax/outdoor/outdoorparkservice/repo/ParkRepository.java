@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 
 @Repository
 public interface ParkRepository extends ReactiveCrudRepository<Park, Long> {
+
   Flux<Park> findAll();
 
 }
